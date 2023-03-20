@@ -1,7 +1,8 @@
-package com.shem.adv160420033week4
+package com.shem.adv160420033week4.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.shem.adv160420033week4.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
