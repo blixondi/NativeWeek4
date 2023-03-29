@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.shem.adv160420033week4.R
 import com.shem.adv160420033week4.viewmodel.ListViewModel
 
@@ -60,9 +61,20 @@ class StudentListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
         viewModel.refresh()
         val recView = view.findViewById<RecyclerView>(R.id.recView)
+        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        val txtError = view.findViewById<TextView>(R.id.txtError)
+        val progressLoad = view.findViewById<ProgressBar>(R.id.progressLoad)
         recView.layoutManager = LinearLayoutManager(context)
         recView.adapter = studentListAdapter
         observeViewModel()
+
+        refreshLayout.setOnRefreshListener {
+            recView.visibility = View.GONE
+            txtError.visibility = View.GONE
+            progressLoad.visibility = View.VISIBLE
+            viewModel.refresh()
+            refreshLayout.isRefreshing = false
+        }
     }
 
 }
