@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.shem.adv160420033week4.R
+import com.shem.adv160420033week4.util.loadImage
 import com.shem.adv160420033week4.viewmodel.DetailViewModel
 
 
@@ -26,9 +29,16 @@ class StudentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        viewModel.fetch()
+        var student_id = ""
 
+        arguments?.let{
+            student_id = StudentDetailFragmentArgs.fromBundle(requireArguments()).studentId
+        }
+        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        viewModel.fetch(student_id)
+
+        val studentPhoto = view.findViewById<ImageView>(R.id.imageView2)
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar2)
         val txtID = view.findViewById<TextView>(R.id.txtID)
         val txtStudentName = view.findViewById<TextView>(R.id.txtStudentName)
         val txtDoB = view.findViewById<TextView>(R.id.txtBod)
@@ -39,6 +49,8 @@ class StudentDetailFragment : Fragment() {
             txtStudentName.text = student.name
             txtDoB.text = student.dob
             txtPhone.text = student.phone
+            studentPhoto.loadImage(student.photoUrl, progressBar)
+
         }
     }
 }
